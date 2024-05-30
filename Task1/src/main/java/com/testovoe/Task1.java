@@ -1,5 +1,8 @@
 package com.testovoe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Task1 {
     public static void main(String[] args) {
 
@@ -27,7 +30,7 @@ public class Task1 {
             System.out.println("m must be less than n");
         }
 
-        StringBuilder path = new StringBuilder();
+        List<Integer> path = new ArrayList<>();
         int currentIndex = 0;
         int[] array = new int[n];
 
@@ -36,7 +39,7 @@ public class Task1 {
         }
 
         do {
-            path.append(array[currentIndex]);
+            path.add(array[currentIndex]);
             currentIndex = (currentIndex + m - 1) % n;
         } while (currentIndex != 0);
 
