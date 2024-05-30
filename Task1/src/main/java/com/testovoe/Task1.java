@@ -24,10 +24,7 @@ public class Task1 {
 
         if (n <= 0 || m <= 0) {
             System.out.println("n and m must be positive integers ");
-        }
-
-        if (m >= n) {
-            System.out.println("m must be less than n");
+            return;
         }
 
         List<Integer> path = new ArrayList<>();
