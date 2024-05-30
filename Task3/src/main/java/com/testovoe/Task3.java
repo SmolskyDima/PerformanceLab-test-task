@@ -12,7 +12,7 @@ import java.util.Map;
 public class Task3 {
     public static void main(String[] args) throws IOException {
         if (args.length != 3) {
-            System.out.println("Usage: java Task3 <value.json> <test.json> <report.json>");
+            System.out.println("Usage: java TestReportGenerator <value.json> <test.json> <report.json>");
             return;
         }
 
@@ -40,26 +40,29 @@ public class Task3 {
     private static void fillValues(JsonNode node, Map<Integer, String> valueMap) {
         if (node.isArray()) {
             for (JsonNode testNode : node) {
-                int id = testNode.get("id").asInt();
-                if (valueMap.containsKey(id)) {
-                    ((ObjectNode) testNode).put("value", valueMap.get(id));
-                }
-                if (testNode.has("values")) {
-                    fillValues(testNode.get("values"), valueMap);
-                }
+                processNode(testNode, valueMap);
             }
         } else if (node.isObject()) {
-            for (JsonNode testNode : node.get("values")) {
-                int id = testNode.get("id").asInt();
-                if (valueMap.containsKey(id)) {
-                    ((ObjectNode) testNode).put("value", valueMap.get(id));
-                }
-                if (testNode.has("values")) {
-                    fillValues(testNode.get("values"), valueMap);
-                }
+            if (node.has("tests")) {
+                fillValues(node.get("tests"), valueMap);
+            } else {
+                processNode(node, valueMap);
+            }
+        }
+    }
+
+    private static void processNode(JsonNode node, Map<Integer, String> valueMap) {
+        if (node.has("id")) {
+            int id = node.get("id").asInt();
+            if (valueMap.containsKey(id)) {
+                ((ObjectNode) node).put("value", valueMap.get(id));
+            }
+        }
+        if (node.has("values")) {
+            JsonNode valuesNode = node.get("values");
+            if (valuesNode != null) {
+                fillValues(valuesNode, valueMap);
             }
         }
     }
 }
-
-
