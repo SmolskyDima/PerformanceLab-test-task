@@ -1,3 +1,4 @@
+
 package com.testovoe;
 
 import java.io.BufferedReader;
@@ -28,8 +29,10 @@ public class Task4 {
         }
 
         int[] nums = numbersList.stream().mapToInt(i -> i).toArray();
-        int median = findMedian(nums);
 
+        int median = findMedian(nums);
+        int minMoves = calculateMinMoves(nums, median);
+        System.out.println(minMoves);
     }
 
     private static int findMedian(int[] nums) {
@@ -40,5 +43,13 @@ public class Task4 {
         } else {
             return nums[n / 2];
         }
+    }
+
+    private static int calculateMinMoves(int[] nums, int median) {
+        int moves = 0;
+        for (int num : nums) {
+            moves += Math.abs(num - median);
+        }
+        return moves;
     }
 }
